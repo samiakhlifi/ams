@@ -1,14 +1,8 @@
 package com.sip.ams.ams.configuration;
-
-
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import com.zaxxer.hikari.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
+import org.springframework.context.annotation.*;
 import javax.sql.DataSource;
-
 @Configuration
 public class DatabaseConfig {
     @Value("${spring.datasource.url}")
@@ -18,4 +12,6 @@ public class DatabaseConfig {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(dbUrl);
         return new HikariDataSource(config);
-    }}
+    }
+}
+

@@ -15,7 +15,7 @@
     <div class="card">
         <div class="card-body">
             <div class="col-md-8">
-                <form action="#" th:action="@{/provider/update}" th:object="${provider}" method="post">
+                <form action="#" th:action="@{/provider/edit/{id}(id=${provider.id})}" th:object="${provider}" method="post">
 
                     <input type="hidden" th:field="*{id}" />
                     <div class="row">

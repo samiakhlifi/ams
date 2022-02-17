@@ -64,7 +64,7 @@ public class ProviderController {
         model.addAttribute("provider", provider);
         return "provider/updateProvider";
     }
-    @PostMapping("update/{id}")
+    @PostMapping("edit/{id}")
     public String updateProvider(@PathVariable("id") long id, @Valid Provider provider, BindingResult result,
                                  Model model) {
         if (result.hasErrors()) {

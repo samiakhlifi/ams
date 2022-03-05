@@ -12,6 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import javax.mail.MessagingException;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/accounts/")
@@ -20,6 +24,10 @@ public class AccountController {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+
     @Autowired
     public AccountController(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
@@ -38,26 +46,31 @@ public class AccountController {
         return "user/listUsers";
     }
 
-    @GetMapping("enable/{id}")
+    @GetMapping("enable/{id}/{email}")
     //@ResponseBody
-    public String enableUserAcount(@PathVariable("id") int id) {
+    public String enableUserAcount(@PathVariable ("id") int id,
+                                   @PathVariable ("email") String email) {
 
-
+        sendEmail(email, true);
         User user = userRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Invalid User Id:" + id));
         user.setActive(1);
         userRepository.save(user);
-        return "redirect:../list";
+        return "redirect:../../list";
     }
 
-    @GetMapping("disable/{id}")
+    @GetMapping("disable/{id}/{email}")
     //@ResponseBody
-    public String disableUserAcount(@PathVariable ("id") int id) {
+    public String disableUserAcount(@PathVariable ("id") int id,
+                                    @PathVariable ("email") String email) {
+
+        sendEmail(email, false);
 
         User user = userRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Invalid User Id:" + id));
         user.setActive(0);
         userRepository.save(user);
-        return "redirect:../list";
+        return "redirect:../../list";
     }
+
 
     @PostMapping("updateRole")
     //@ResponseBody
@@ -67,7 +80,6 @@ public class AccountController {
 
         User user = userRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Invalid User Id:" + id));
 
-
         Role userRole = roleRepository.findByRole(newRole);
 
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
@@ -76,6 +88,28 @@ public class AccountController {
         return "redirect:list";
     }
 
+
+
+    void sendEmail(String email, boolean state) {
+
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(email);
+        if(state == true)
+        {
+            msg.setSubject("Account Has Been Activated");
+            msg.setText("Hello, Your account has been activated. "
+                    +
+                    "You can log in : http://127.0.0.1:81/login"
+                    + " \n Best Regards!");
+        }
+        else
+        {
+            msg.setSubject("Account Has Been disactivated");
+            msg.setText("Hello, Your account has been disactivated.");
+        }
+        javaMailSender.send(msg);
+
+    }
 
 }
 

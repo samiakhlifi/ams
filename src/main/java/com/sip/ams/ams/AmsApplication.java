@@ -10,7 +10,6 @@ import java.io.File;
 public class AmsApplication {
 
 	public static void main(String[] args) {
-
 		new File(ArticleController.uploadDirectory).mkdir();
 		SpringApplication.run(AmsApplication.class, args);
 	}

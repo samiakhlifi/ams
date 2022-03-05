@@ -1,13 +1,9 @@
 package com.sip.ams.ams.controllers;
-
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import javax.validation.Valid;
-
 import com.sip.ams.ams.entities.Article;
 import com.sip.ams.ams.entities.Provider;
 import com.sip.ams.ams.repository.ArticleRepository;
@@ -17,12 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -31,10 +25,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class ArticleController {
 
     public static String uploadDirectory = System.getProperty("user.dir")+"/src/main/resources/static/uploads";
-
-    private final ArticleRepository articleRepository;
-    private final ProviderRepository providerRepository;
     @Autowired
+    private final ArticleRepository articleRepository;
+    @Autowired
+    private final ProviderRepository providerRepository;
     public ArticleController(ArticleRepository articleRepository, ProviderRepository providerRepository) {
         this.articleRepository = articleRepository;
         this.providerRepository = providerRepository;
